@@ -1,0 +1,47 @@
+body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    font-size: 2rem;
+    color: #333;
+    text-align: center;
+}
+
+/* クイズ開始画面 */
+.start-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #fff;
+    border-bottom: 5px solid #ddd;
+}
+
+.start-screen p {
+    font-size: 1.2rem;
+    margin: 10px 0;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #25b786;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+button:hover {
+    background-color: #17815e;
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed
+}

@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-// import './App.css'
+import React, { useEffect, useState } from "react";
+import './App.css'
 
 interface Question {
   quiz: string;
@@ -8,36 +8,34 @@ interface Question {
   explanation: string;
 }
 
-const questions: Question[] = [
-  {
-    quiz: "地球上にはおよそ何種類の昆虫がいるでしょうか？",
-    choices: ["約100万個", "約1000万個", "約1億個"],
-    answer: 1,
-    explanation: "地球上には推定約1000万種の昆虫が存在すると言われています。",
-  },
-  {
-    quiz: "JavaScriptの変数宣言に使われるキーワードはどれですか？",
-    choices: ["var", "let", "const"],
-    answer: 3,
-    explanation:
-      "JavaScriptでは「var」「let」「const」を使って変数を宣言できます。",
-  },
-  {
-    quiz: "CSSのフレームワークで有名なのはどれですか？",
-    choices: ["Bootstrap", "Tailwind", "Bulma", "以上すべて"],
-    answer: 3,
-    explanation:
-      "Bootstrap、Tailwind、Bulmaはすべて人気のあるCSSフレームワークです。",
-  },
-];
-
 const App: React.FC = () => {
+  const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState<number>(0);
   const [showExplanation, setShowExplanation] = useState<boolean>(false);
   const [quizFinished, setQuizFinished] = useState<boolean>(false);
   const [quizStarted, setQuizStarted] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [dots, setDots] = useState<string>(".");
+  const [error, setError] = useState<string | null>(null);
+
+  const API_URL = import.meta.env.VITE_LLM_INTERACTION_API_URL;
+
+  useEffect(() => {
+    if (loading) {
+      const interval = setInterval(() => {
+        setDots((prevDots) => {
+          if (prevDots.length === 3) {
+            return ".";
+          }
+          return prevDots + ".";
+        });
+      }, 500);
+
+      return () => clearInterval(interval);
+    }
+  }, [loading]);
 
   const handleNextQuestion = (): void => {
     if (selectedAnswer === null) return;
@@ -58,9 +56,49 @@ const App: React.FC = () => {
     }
   };
 
-  const startQuiz = (): void => {
+  const startQuiz = async (): Promise<void> => {
     setQuizStarted(true);
+    setLoading(true);
+    const fetchedQuestions: Question[] = [];
+
+    try {
+      for (let i = 0; i < 1; i++) {
+        const response = await fetch(`${API_URL}/trivia_quiz`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        fetchedQuestions.push({
+          quiz: data.item.quiz,
+          choices: data.item.choices,
+          answer: data.item.answer,
+          explanation: data.item.explanation,
+        });
+      }
+      setQuestions(fetchedQuestions);
+    } catch (error: any) {
+      setError("エラーが発生しました");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  if(error) {
+    return (
+      <div className="error-screen">
+        <h1>エラーが発生しました</h1>
+        <p>{error}</p>
+        <p>リロードしてやり直してください</p>
+      </div>
+    );
+  }
 
   if (!quizStarted) {
     return (
@@ -69,7 +107,15 @@ const App: React.FC = () => {
         <p>クイズを開始するには、下のボタンをクリックしてください</p>
         <button onClick={startQuiz}>クイズを開始</button>
       </div>
-    )
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="loading-screen">
+        <h1>クイズを読み込み中{dots}</h1>
+      </div>
+    );
   }
 
   if (quizFinished) {
