@@ -45,3 +45,10 @@ button:disabled {
     background-color: #ccc;
     cursor: not-allowed
 }
+
+.loading-screen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
