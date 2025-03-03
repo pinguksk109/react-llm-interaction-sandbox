@@ -68,21 +68,25 @@ button:disabled {
     gap: 10px;
 }
 
-/* .choices button {
-
-} */
-
-/* .loading-screen {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #fff;
-    border-bottom: 5px solid #ddd;
+.choices button {
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border-radius: 5px;
 }
 
-.loading-screen h1 {
-    font-size: 2rem;
-    color: #333;
-} */
+.choices button:hover {
+    background-color: #ddd;
+}
+
+.choices button:disabled {
+    cursor: not-allowed;
+    background-color: #e9ecef;
+}
+
+.next-button {
+    margin-top: 20px;
+}
