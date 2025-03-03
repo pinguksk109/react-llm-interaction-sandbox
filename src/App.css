@@ -1,92 +1,66 @@
 body {
     font-family: 'Noto Sans JP', sans-serif;
-    background-color: #f8f9fa;
+    background-color: #f4f4f4;
+    text-align: center;
     margin: 0;
     padding: 0;
-    text-align: center;
-}
-
-h1 {
-    font-size: 2rem;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-/* クイズ開始画面 */
-.start-screen, .loading-screen, .error-screen, .result {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #fff;
-    border-bottom: 5px solid #ddd;
-}
-
-.start-screen p {
-    font-size: 1.2rem;
-    margin: 10px 0;
-}
-
-button {
-    padding: 10px 20px;
-    background-color: #25b786;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #17815e;
-}
-
-button:disabled {
-    background-color: #ccc;
-    cursor: not-allowed
 }
 
 .App {
-    padding: 20px;
     max-width: 600px;
-    margin: auto;
-    background-color: #fff;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
-    padding: 20px;
+    margin: 20px auto;
+    background: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.question {
-    margin-bottom: 20px;
+h1 {
+    color: #333;
+}
+
+.question h2 {
+    color: #444;
 }
 
 .choices {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    margin-top: 10px;
 }
 
-.choices button {
-    background-color: #f1f1f1;
-    border: 1px solid #ccc;
-    padding: 10px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border-radius: 5px;
+button {
+    background-color: #25b786;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.choices button:hover {
-    background-color: #ddd;
+button:hover {
+    background-color: #1e9c6d;
 }
 
-.choices button:disabled {
+button:disabled {
+    background-color: #ccc;
     cursor: not-allowed;
-    background-color: #e9ecef;
 }
 
 .next-button {
     margin-top: 20px;
+}
+
+.explanation {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #eef;
+}
+
+.start-screen, .loading-screen, .error-screen, .result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    background-color: white;
+    padding: 20px;
 }
