@@ -90,6 +90,16 @@ const App: React.FC = () => {
     }
   };
 
+  const resetQuiz = (): void => {
+    setQuestions([]);
+    setCurrentQuestionIndex(0);
+    setSelectedAnswer(null);
+    setScore(0);
+    setShowExplanation(false);
+    setQuizFinished(false);
+    setQuizStarted(false);
+  }
+
   if(error) {
     return (
       <div className="error-screen">
@@ -125,6 +135,7 @@ const App: React.FC = () => {
         <p>
           あなたのスコアは {score} / {questions.length}です
         </p>
+        <button onClick={resetQuiz}>もう一度ゲームをする</button>
       </div>
     );
   }
