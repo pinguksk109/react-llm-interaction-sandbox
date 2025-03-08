@@ -19,6 +19,8 @@ const App: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [dots, setDots] = useState<string>(".");
   const [error, setError] = useState<string | null>(null);
+  const [category, setCategory] = useState<string>("");
+  const [selectingCategory, setSelectionCategory] = useState<boolean>(false);
 
   const API_URL = import.meta.env.VITE_LLM_INTERACTION_API_URL;
 
@@ -62,12 +64,13 @@ const App: React.FC = () => {
     const fetchedQuestions: Question[] = [];
 
     try {
-      for (let i = 0; i < 1; i++) {
+      for (let i = 0; i < 3; i++) {
         const response = await fetch(`${API_URL}/trivia_quiz`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify(category ? { category } : {}),
         });
 
         if (!response.ok) {
@@ -114,8 +117,25 @@ const App: React.FC = () => {
     return (
       <div className="start-screen">
         <h1>豆知識クイズ</h1>
-        <p>クイズを開始するには、下のボタンをクリックしてください</p>
-        <button onClick={startQuiz}>クイズを開始</button>
+        {!selectingCategory ? (
+          <>
+            <p>クイズのスタート方法を選んでください</p>
+            <button onClick={() => setSelectionCategory(true)}>クイズのジャンルを指定する</button>
+            <button onClick={startQuiz}>お任せでスタート</button>
+          </>
+        ) : (
+          <>
+            <p>クイズのジャンルを入力してください</p>
+            <input
+              type="text"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              placeholder="日本の歴史"
+            />
+            <button onClick={startQuiz} disabled={!category.trim()}>このジャンルで開始</button>
+            <button onClick={() => setSelectionCategory(false)}>戻る</button>
+          </>
+        )}
       </div>
     );
   }
