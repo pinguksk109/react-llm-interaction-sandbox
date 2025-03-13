@@ -65,12 +65,14 @@ const App: React.FC = () => {
 
     try {
       for (let i = 0; i < 3; i++) {
+        const body = category.trim() ? JSON.stringify({ category }) : undefined
+
         const response = await fetch(`${API_URL}/trivia_quiz`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(category ? { category } : {}),
+          body
         });
 
         if (!response.ok) {
