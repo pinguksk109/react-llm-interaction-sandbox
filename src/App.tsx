@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import  "./Quiz.scss";
+import  "./App.scss";
 
 type Question = {
     quiz: string;
@@ -45,7 +45,7 @@ const Quiz: React.FC = () => {
     const handleCotinue = () => {
         setShowExplanation(false);
         setSelectedAnswer(null);
-        if(currentQuestionIndex + 1 < questions.length) {
+        if (currentQuestionIndex + 1 < questions.length) {
             setCurrentQuestionIndex((prev) => prev + 1);
         } else {
             setQuizFinished(true);
@@ -57,7 +57,7 @@ const Quiz: React.FC = () => {
         setLoading(true);
         const fetchedQuestions: Question[] = [];
 
-        try{
+        try {
             for (let i = 0; i < 1; i++) {
                 const body = category.trim() ? JSON.stringify({ category }) : undefined;
                 const response = await fetch("http://127.0.0.1:8000/trivia_quiz", {
@@ -68,7 +68,7 @@ const Quiz: React.FC = () => {
                     body,
                 });
 
-                if(!response.ok) {
+                if (!response.ok) {
                     throw new Error(`API Error: ${response.statusText}`);
                 }
 
@@ -119,10 +119,10 @@ const Quiz: React.FC = () => {
 
                     {selectingCategory && (
                         <div>
-                        <p>クイズのジャンルを入力してください</p>
-                        <input type="text" placeholder="日本の歴史" value={category} onChange={(e) => setCategory(e.target.value)} />
-                        <button disabled={!category.trim()} onClick={startQuiz}>このジャンルで開始</button>
-                        <button onClick={() => setSelectingCategory(false)}>戻る</button>
+                            <p>クイズのジャンルを入力してください</p>
+                            <input type="text" placeholder="日本の歴史" value={category} onChange={(e) => setCategory(e.target.value)} />
+                            <button disabled={!category.trim()} onClick={startQuiz}>このジャンルで開始</button>
+                            <button onClick={() => setSelectingCategory(false)}>戻る</button>
                         </div>
                     )}
                 </div>
@@ -137,8 +137,42 @@ const Quiz: React.FC = () => {
                     <button onClick={resetQuiz}>もう一度ゲームをする</button>
                 </div>
             )}
+            {quizStarted && !loading && !quizFinished && (
+                <div className="App">
+                    <div className="question">
+                        <h2>{currentQuestion.quiz}</h2>
+                        <div className="choices">
+                            {currentQuestion.choices?.map((choice, index) => (
+                                <button
+                                    key={index}
+                                    style={{ backgroundColor: selectedAnswer === index ? "lightblue" : "" }}
+                                    onClick={() => setSelectedAnswer(index)}
+                                    disabled={showExplanation}
+                                >
+                                    {choice}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="next-button">
+                        {!showExplanation ? (
+                            <button onClick={handleNextQuestion} disabled={selectedAnswer === null}>解答</button>
+                        ) : (
+                            <button onClick={handleCotinue}>次の問題へ</button>
+                        )}
+                    </div>
+
+                    {showExplanation && (
+                        <div className="explanation">
+                            <h3>正解: {currentQuestion.answer}</h3>
+                            <p>{currentQuestion.explanation}</p>
+                        </div>
+                    )}
+                </div>
+            )}
         </div>
-    )
-}
+    );
+};
 
 export default Quiz;
